@@ -8,8 +8,7 @@ import (
 
 func TestSolveListDistance(t *testing.T) {
 	tests := []struct {
-		name string // description of this test case
-		// Named input parameters for target function.
+		name string
 		x    []int
 		y    []int
 		want int
@@ -19,6 +18,12 @@ func TestSolveListDistance(t *testing.T) {
 			x:    []int{3, 4, 2, 1, 3, 3},
 			y:    []int{4, 3, 5, 3, 9, 3},
 			want: 11,
+		},
+		{
+			name: "Zero",
+			x:    []int{},
+			y:    []int{},
+			want: 0,
 		},
 	}
 	for _, tt := range tests {
