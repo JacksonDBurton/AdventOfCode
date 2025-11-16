@@ -61,3 +61,61 @@ func (rReport RedNosedReports) Part1() (s string) {
 	}
 	return strconv.Itoa(validReports)
 }
+
+func (rReport RedNosedReports) Part2() (s string) {
+	validReports := 0
+	for _, report := range rReport {
+		if len(report) < 2 {
+			continue
+		}
+		// fmt.Println(report)
+		// increase holds if the report should be increasing or decreasing
+		// grad holds if the report is increasing or decreasing gradualy
+		increase, grad, dampened := -1, true, false
+		if report[1] > report[0] {
+			increase = 1
+		}
+		for i := 1; i < len(report); i++ {
+			diff := (report[i] - report[i-1]) * increase
+			// fmt.Printf("%v, ", diff)
+
+			if isNotGradual(diff) {
+				if !dampened {
+					if i == len(report)-1 {
+						continue
+					}
+					if i < len(report)-1 {
+						potDiff := (report[i+1] - report[i-1]) * increase
+						if !isNotGradual(potDiff) {
+							// fmt.Printf("%v, ", "positive damp")
+							dampened = true
+							report[i] = report[i-1]
+							continue
+						}
+					}
+					if i > 1 && !dampened {
+						potDiff := (report[i] - report[i-2]) * increase
+						if !isNotGradual(potDiff) {
+							// fmt.Printf("%v, ", "negative damp")
+							dampened = true
+							continue
+						}
+					}
+				}
+				grad = false
+				break
+			}
+		}
+		// fmt.Println("")
+		if grad {
+			validReports++
+		} else {
+			fmt.Println(report)
+		}
+	}
+	return strconv.Itoa(validReports)
+}
+
+func isNotGradual(i int) bool {
+	return i > 3 || i < 1
+}
