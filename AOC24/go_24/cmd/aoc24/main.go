@@ -13,5 +13,7 @@ func main() {
 		panic("Open day1 historian hysteria input failed")
 	}
 
-	fmt.Printf("Day1 Q1: %v", day1.ParseFile(f).SolveListDistance())
+	hList := day1.ParseFile(f)
+	fmt.Printf("Day1 Q1: %v\n", hList.SolveListDistance())
+	fmt.Printf("Day1 Q2: %v\n", hList.SimilarityScore())
 }
