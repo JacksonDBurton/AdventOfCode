@@ -3,47 +3,37 @@
 package day1
 
 import (
-	"bufio"
+	"encoding/csv"
 	"fmt"
 	"os"
 	"slices"
 	"strconv"
-	"strings"
 )
 
-func SolveQuestion(questionFile *os.File) (answer string) {
-	answerList := []int{}
-	scanner := bufio.NewScanner(questionFile)
-	for scanner.Scan() {
-		line := scanner.Text()
-		pair := strings.Split(line, " ")
-		if len(pair) != 2 {
-			panic("Pair length not 2")
-		}
-
-		xInt, err := strconv.Atoi(pair[0])
-		if err != nil {
-			panic(fmt.Sprintf("Failed to convert x: %v", pair[0]))
-		}
-		yInt, err := strconv.Atoi(pair[1])
-		if err != nil {
-			panic(fmt.Sprintf("Failed to convert y: %v", pair[1]))
-		}
-		x := splitDigits(xInt)
-		y := splitDigits(yInt)
-		answerList = append(answerList, SolveListDistance(x, y))
+func SolveQuestion(questionFile *os.File) (answer int) {
+	scanner := csv.NewReader(questionFile)
+	scanner.Comma = ' '
+	scanner.TrimLeadingSpace = true
+	questionList, err := scanner.ReadAll()
+	if err != nil {
+		panic("Failed to read question list")
 	}
 
-	return strings.Join(strings.Split(fmt.Sprint(answerList), ", "), "")
-}
-
-func splitDigits(n int) (digits []int) {
-	for n > 0 {
-		dig := n % 10
-		n /= 10
-		digits = append(digits, dig)
+	x, y := []int{}, []int{}
+	for _, v := range questionList {
+		if i, err := strconv.Atoi(v[0]); err == nil {
+			x = append(x, i)
+		} else {
+			panic(fmt.Sprintf("Failed to convert Atoi: %v", v[0]))
+		}
+		if i, err := strconv.Atoi(v[1]); err == nil {
+			y = append(y, i)
+		} else {
+			panic(fmt.Sprintf("Failed to convert Atoi: %v", v[0]))
+		}
 	}
-	return
+
+	return SolveListDistance(x, y)
 }
 
 func SolveListDistance(x []int, y []int) (totalDistance int) {

@@ -1,5 +1,4 @@
-// Package aoc24 is the main package for go_24 AOC project
-package aoc24
+package main
 
 import (
 	"fmt"
@@ -9,7 +8,7 @@ import (
 )
 
 func main() {
-	f, err := os.Open("../../internal/day1/day1_historian_hysteria_input.txt")
+	f, err := os.Open("./internal/day1/day1_historian_hysteria_input.txt")
 	if err != nil {
 		panic("Open day1 historian hysteria input failed")
 	}
