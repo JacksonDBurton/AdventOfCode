@@ -40,6 +40,7 @@ func ParseFile(questionFile *os.File) (hList HistorianList) {
 	return hList
 }
 
+// SolveListDistance returns the solution to Q1 of D1 for this HistorianList
 func (hList HistorianList) SolveListDistance() (totalDistance int) {
 	slices.Sort(hList.X)
 	slices.Sort(hList.Y)
@@ -52,4 +53,24 @@ func (hList HistorianList) SolveListDistance() (totalDistance int) {
 		totalDistance += product
 	}
 	return totalDistance
+}
+
+// SimilarityScore returns the solution to Q2 of D1 for this HistorianList.
+// Similarity is determined by multiplying the value of each element of list x by how
+// often that element can be found in list y.
+// Take the individual similarity score and add it to totalSimilarity
+func (hList HistorianList) SimilarityScore() (totalSimilarity int) {
+	yMap := make(map[int]int)
+
+	for _, v := range hList.Y {
+		yMap[v] += 1
+	}
+
+	for _, v := range hList.X {
+		if yCount, ok := yMap[v]; ok {
+			totalSimilarity += yCount * v
+		}
+	}
+
+	return totalSimilarity
 }
