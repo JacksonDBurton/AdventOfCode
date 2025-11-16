@@ -6,29 +6,25 @@ import (
 	"AOC24/internal/day1"
 )
 
-func TestSolveListDistance(t *testing.T) {
+func TestHistorianList_SolveListDistance(t *testing.T) {
 	tests := []struct {
-		name string
-		x    []int
-		y    []int
-		want int
+		name  string
+		hList day1.HistorianList
+		want  int
 	}{
 		{
-			name: "Day 1 Example",
-			x:    []int{3, 4, 2, 1, 3, 3},
-			y:    []int{4, 3, 5, 3, 9, 3},
-			want: 11,
-		},
-		{
-			name: "Zero",
-			x:    []int{},
-			y:    []int{},
-			want: 0,
+			name:  "Day 1 Example",
+			hList: day1.HistorianList{X: []int{3, 4, 2, 1, 3, 3}, Y: []int{4, 3, 5, 3, 9, 3}},
+			want:  11,
+		}, {
+			name:  "Zero",
+			hList: day1.HistorianList{X: []int{}, Y: []int{}},
+			want:  0,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := day1.SolveListDistance(tt.x, tt.y)
+			got := tt.hList.SolveListDistance()
 			if got != tt.want {
 				t.Errorf("SolveListDistance() = %v, want %v", got, tt.want)
 			}

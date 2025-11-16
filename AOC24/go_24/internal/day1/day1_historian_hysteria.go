@@ -10,7 +10,12 @@ import (
 	"strconv"
 )
 
-func SolveQuestion(questionFile *os.File) (answer int) {
+type HistorianList struct {
+	X []int
+	Y []int
+}
+
+func ParseFile(questionFile *os.File) (hList HistorianList) {
 	scanner := csv.NewReader(questionFile)
 	scanner.Comma = ' '
 	scanner.TrimLeadingSpace = true
@@ -19,29 +24,28 @@ func SolveQuestion(questionFile *os.File) (answer int) {
 		panic("Failed to read question list")
 	}
 
-	x, y := []int{}, []int{}
 	for _, v := range questionList {
 		if i, err := strconv.Atoi(v[0]); err == nil {
-			x = append(x, i)
+			hList.X = append(hList.X, i)
 		} else {
 			panic(fmt.Sprintf("Failed to convert Atoi: %v", v[0]))
 		}
 		if i, err := strconv.Atoi(v[1]); err == nil {
-			y = append(y, i)
+			hList.Y = append(hList.Y, i)
 		} else {
 			panic(fmt.Sprintf("Failed to convert Atoi: %v", v[0]))
 		}
 	}
 
-	return SolveListDistance(x, y)
+	return hList
 }
 
-func SolveListDistance(x []int, y []int) (totalDistance int) {
-	slices.Sort(x)
-	slices.Sort(y)
+func (hList HistorianList) SolveListDistance() (totalDistance int) {
+	slices.Sort(hList.X)
+	slices.Sort(hList.Y)
 
-	for i := range x {
-		product := x[i] - y[i]
+	for i := range hList.X {
+		product := hList.X[i] - hList.Y[i]
 		if product < 0 {
 			product *= -1
 		}

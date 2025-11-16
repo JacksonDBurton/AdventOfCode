@@ -13,5 +13,5 @@ func main() {
 		panic("Open day1 historian hysteria input failed")
 	}
 
-	fmt.Printf("Day1 Q1: %v", day1.SolveQuestion(f))
+	fmt.Printf("Day1 Q1: %v", day1.ParseFile(f))
 }
