@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"AOC24/internal/day03"
 	"AOC24/internal/day1"
 	"AOC24/internal/day2"
 )
@@ -30,4 +31,14 @@ func main() {
 	f.Close()
 	fmt.Printf("Day2 P1: %v\n", rReport.Part1())
 	fmt.Printf("Day2 P2: %v\n", rReport.Part2())
+
+	fmt.Println("=====DAY 3=====")
+	f, err = os.Open("./internal/day03/day03_mull_it_over_input.txt")
+	if err != nil {
+		panic("Open day03 Mull it Over input failed")
+	}
+
+	mParse := day03.ParseFile(f)
+	f.Close()
+	fmt.Printf("Day03 P1: %v\n", mParse.Part1())
 }
