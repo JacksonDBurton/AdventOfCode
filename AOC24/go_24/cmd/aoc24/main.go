@@ -41,4 +41,5 @@ func main() {
 	mParse := day03.ParseFile(f)
 	f.Close()
 	fmt.Printf("Day03 P1: %v\n", mParse.Part1())
+	fmt.Printf("Day03 P2: %v\n", mParse.Part2())
 }
