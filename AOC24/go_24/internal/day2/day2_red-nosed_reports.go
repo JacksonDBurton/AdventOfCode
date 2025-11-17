@@ -68,52 +68,46 @@ func (rReport RedNosedReports) Part2() (s string) {
 		if len(report) < 2 {
 			continue
 		}
-		// fmt.Println(report)
-		// increase holds if the report should be increasing or decreasing
-		// grad holds if the report is increasing or decreasing gradualy
-		increase, grad, dampened := -1, true, false
-		if report[1] > report[0] {
-			increase = 1
+		_, ok := runReport(report)
+		if ok {
+			validReports++
+			continue
 		}
-		for i := 1; i < len(report); i++ {
-			diff := (report[i] - report[i-1]) * increase
-			// fmt.Printf("%v, ", diff)
-
-			if isNotGradual(diff) {
-				if !dampened {
-					if i == len(report)-1 {
-						continue
-					}
-					if i < len(report)-1 {
-						potDiff := (report[i+1] - report[i-1]) * increase
-						if !isNotGradual(potDiff) {
-							// fmt.Printf("%v, ", "positive damp")
-							dampened = true
-							report[i] = report[i-1]
-							continue
-						}
-					}
-					if i > 1 && !dampened {
-						potDiff := (report[i] - report[i-2]) * increase
-						if !isNotGradual(potDiff) {
-							// fmt.Printf("%v, ", "negative damp")
-							dampened = true
-							continue
-						}
-					}
-				}
-				grad = false
+		isSafe := false
+		for i := range report {
+			if _, ok = runReport(DeleteEle(report, i)); ok {
+				isSafe = true
 				break
 			}
 		}
-		// fmt.Println("")
-		if grad {
+
+		if isSafe {
 			validReports++
-		} else {
-			fmt.Println(report)
 		}
 	}
 	return strconv.Itoa(validReports)
+}
+
+func DeleteEle(list []int, i int) []int {
+	out := make([]int, 0, len(list)-1)
+	out = append(out, list[:i]...)
+	out = append(out, list[i+1:]...)
+	return out
+}
+
+func runReport(report []int) (int, bool) {
+	increase := -1
+	if report[1] > report[0] {
+		increase = 1
+	}
+	for i := 1; i < len(report); i++ {
+		diff := (report[i] - report[i-1]) * increase
+
+		if isNotGradual(diff) {
+			return i, false
+		}
+	}
+	return 0, true
 }
 
 func isNotGradual(i int) bool {
